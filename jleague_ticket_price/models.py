@@ -145,7 +145,7 @@ class TicketPrice(models.Model):
         SeatCategory, verbose_name="座席カテゴリID", on_delete=models.PROTECT
     )
     # 9.価格
-    price = models.IntegerField(verbose_name="小人価格", null=True, blank=True)
+    price = models.IntegerField(verbose_name="価格", null=True, blank=True)
 
     def __str__(self):
         return str(self.price) + "円"

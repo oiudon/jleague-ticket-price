@@ -36,12 +36,46 @@ class TicketPriceSerializer(serializers.ModelSerializer):
 
 
 class MatchTitleDatetimeSerializer(serializers.ModelSerializer):
-    """試合タイトルと日時だけを含むシリアライザ"""
+    """試合タイトルと日時、大会名、スタジアム名だけを含むシリアライザ"""
+
+    # 関連先のモデル m_competition の competition_name を取得
+    competition_name = serializers.ReadOnlyField(
+        source="m_competition.competition_name"
+    )
+
+    # 関連先のモデル m_stadium の stadium_name を取得
+    stadium_name = serializers.ReadOnlyField(source="m_stadium.stadium_name")
 
     class Meta:
         # 対象のモデルクラスを指定
         model = TicketPrice
         # 利用するモデルのフィールドを指定
-        fields = ["match_title", "match_datetime"]
+        fields = ["match_title", "match_datetime", "competition_name", "stadium_name"]
+        # 全フィールドを読み取り専用に設定
+        read_only_fields = fields
+
+
+class TicketYearSerializer(serializers.Serializer):
+    """試合の年を取得するシリアライザ"""
+
+    match_year = serializers.IntegerField()
+
+    class Meta:
+        fields = ["match_year"]
+
+
+class SeatCategorySerializer(serializers.ModelSerializer):
+    """選択された試合の座席カテゴリのリストを取得するシリアライザ"""
+
+    # 関連先のモデル m_seat_category の seat_category_name を取得
+    seat_category_name = serializers.ReadOnlyField(
+        source="m_seat_category.seat_category_name"
+    )
+
+    class Meta:
+        # 対象のモデルクラスを指定
+        model = TicketPrice
+        # 利用するモデルのフィールドを指定
+        fields = ["seat_category_name"]
         # 全フィールドを読み取り専用に設定
         read_only_fields = fields
