@@ -42,11 +42,11 @@
 
 <script>
 import { ref, onMounted, watch } from "vue";
-import { usePriceStore } from "../stores/price.js";
+// import { usePriceStore } from "../stores/price.js";
 import { useMessageStore } from "../stores/message.js";
 import api from "../services/api.js";
 import GlobalMessage from "../components/GlobalMessage.vue";
-import axios from "axios";
+// import axios from "axios";
 import LineChart from "../components/LineChart.vue";
 
 export default {
@@ -57,7 +57,7 @@ export default {
   },
   setup() {
     // ストアオブジェクトを取得
-    const priceStore = usePriceStore();
+    // const priceStore = usePriceStore();
     const messageStore = useMessageStore();
 
     // チケット価格一覧
@@ -101,6 +101,8 @@ export default {
 
     // 開催年セレクトボックスの値が変更されたときに発動する関数
     const onYearSelectChange = () => {
+      // メッセージをクリア
+      messageStore.clear();
       // 選択中の試合タイトル、試合会場、座席カテゴリ、グラフをクリア
       matchSelected.value = null;
       stadiumName.value = null;
@@ -140,12 +142,15 @@ export default {
           });
         })
         .catch((error) => {
-          console.error("APIリクエストエラー:", error);
+          // エラー発生時はエラーメッセージを表示
+          messageStore.setError(error);
         });
     };
 
     // 試合タイトルセレクトボックスの値が変更されたときに発動する関数
     const onMatchSelectChange = () => {
+      // メッセージをクリア
+      messageStore.clear();
       // 選択中の試合タイトル、試合会場、座席カテゴリ、グラフをクリア
       stadiumName.value = null;
       seatSelected.value = null;
@@ -176,13 +181,16 @@ export default {
             );
           })
           .catch((error) => {
-            console.error("APIリクエストエラー:", error);
+            // エラー発生時はエラーメッセージを表示
+            messageStore.setError(error);
           });
       }
     };
 
     // 座席カテゴリセレクトボックスの値が変更されたときに発動する関数
     const onSeatSelectChange = () => {
+      // メッセージをクリア
+      messageStore.clear();
       if (seatSelected.value) {
         // 選択された試合タイトルの要素番号を取得
         const selectedIndex = matchTitles.value.indexOf(matchSelected.value);
@@ -208,7 +216,8 @@ export default {
             dates.value = response.data.map((item) => item.created_at);
           })
           .catch((error) => {
-            console.error("APIリクエストエラー:", error);
+            // エラー発生時はエラーメッセージを表示
+            messageStore.setError(error);
           });
       }
     };
@@ -227,7 +236,8 @@ export default {
           yearSelected.value = Math.max(...matchYears.value);
         })
         .catch((error) => {
-          console.error("APIリクエストエラー:", error);
+          // エラー発生時はエラーメッセージを表示
+          messageStore.setError(error);
         });
     });
 
