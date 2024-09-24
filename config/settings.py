@@ -13,6 +13,9 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 from datetime import timedelta
 from pathlib import Path
 
+from django.utils import timezone
+from django.utils.timezone import localtime
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -172,7 +175,9 @@ LOGGING = {
         "file": {
             "level": "DEBUG",
             "class": "logging.FileHandler",
-            "filename": f"/Users/mac/Documents/Django/{BASE_DIR.name}/log/app.log",
+            "filename": f"/Users/mac/Documents/Django/{BASE_DIR.name}/log/"
+            + localtime(timezone.now()).strftime("%Y-%m-%d")
+            + ".log",
             "formatter": "development",
         },
     },
