@@ -163,6 +163,8 @@ export default {
         const selectedMatchInfo = matchTitleDatetime.value[selectedIndex];
         // 試合情報一覧からスタジアム名を取得
         stadiumName.value = selectedMatchInfo.stadium_name;
+        // 試合情報一覧から試合タイトルを取得
+        const matchTitle = selectedMatchInfo.match_title;
         // 試合日時の不要な部分を除外
         const matchDatetime = selectedMatchInfo.match_datetime.replace(
           /(:\d{2}):\d{2}.*$/,
@@ -172,7 +174,7 @@ export default {
         api({
           // 試合タイトルが選択されたらその試合のスタジアムの座席カテゴリを取得
           method: "get",
-          url: `/seat-categories/?team_name=ＦＣ町田ゼルビア&match_datetime=${matchDatetime}`,
+          url: `/seat-categories/?team_name=ＦＣ町田ゼルビア&match_datetime=${matchDatetime}&match_title=${matchTitle}`,
         })
           .then((response) => {
             // 座席カテゴリを配列で取得
@@ -198,6 +200,8 @@ export default {
         const selectedMatchInfo = matchTitleDatetime.value[selectedIndex];
         // 試合情報一覧からスタジアム名を取得
         stadiumName.value = selectedMatchInfo.stadium_name;
+        // 試合情報一覧から試合タイトルを取得
+        const matchTitle = selectedMatchInfo.match_title;
         // 試合日時の不要な部分を除外
         const matchDatetime = selectedMatchInfo.match_datetime.replace(
           /(:\d{2}):\d{2}.*$/,
@@ -207,7 +211,7 @@ export default {
         api({
           // 座席カテゴリが選択されたらその座席のチケット価格を取得
           method: "get",
-          url: `/ticket-prices/?team_name=ＦＣ町田ゼルビア&match_datetime=${matchDatetime}&seat_category_name=${seatSelected.value}`,
+          url: `/ticket-prices/?team_name=ＦＣ町田ゼルビア&match_datetime=${matchDatetime}&match_title=${matchTitle}&seat_category_name=${seatSelected.value}`,
         })
           .then((response) => {
             // チケット価格を配列で取得
