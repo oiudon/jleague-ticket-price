@@ -1,6 +1,11 @@
+import logging
+import os
 import re
-from datetime import datetime
+import time
+from datetime import datetime, timedelta
+from pathlib import Path
 
+import environ
 import pytz
 import requests
 from bs4 import BeautifulSoup
@@ -13,6 +18,8 @@ from jleague_ticket_price.models import (
     Team,
     TicketPrice,
 )
+
+logger = logging.getLogger(__name__)
 
 japan_timezone = pytz.timezone("Asia/Tokyo")
 
@@ -136,3 +143,38 @@ def ticket_price_scraping():
                 print(
                     f"{str(match_datetime)} {match_title} {seat_category}チケット価格：{ticket_price} は登録済みです"
                 )
+
+    logger.info("チケット価格スクレイピング完了")
+
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+env = environ.Env()
+# もし.envファイルが存在したら設定を読み込む
+environ.Env.read_env(BASE_DIR / "config/.env")
+
+
+def cleanup_logs():
+    # ログファイルのディレクトリ
+    log_dir = env("LOG_DIR")
+    # 保持期間を1週間に設定
+    retention_period = timedelta(days=7)
+    now = time.time()
+    if not os.path.exists(log_dir):
+        logger.error(f"Log directory {log_dir} does not exist.")
+        return
+    # ログディレクトリ内のファイルをチェック
+    for filename in os.listdir(log_dir):
+        file_path = os.path.join(log_dir, filename)
+        # ファイルかつログファイル（適切にフィルタリング可能）
+        if os.path.isfile(file_path) and filename.endswith(".log"):
+            # ファイルの最終変更時刻を取得
+            file_age = now - os.path.getmtime(file_path)
+            # ファイルの年齢が7日を超えている場合、削除
+            if file_age > retention_period.total_seconds():
+                os.remove(file_path)
+                print(f"Deleted log file: {file_path}")
+            else:
+                print(f"Retaining log file: {file_path}")
+
+    logger.info("ログ削除処理完了")

@@ -10,7 +10,7 @@
 
       <!-- 試合年セレクトボックス -->
       <v-select
-        :items="matchYears"
+        :items="matchYears.slice().reverse()"
         label="年"
         class="ma-2"
         v-model="yearSelected"
@@ -19,7 +19,7 @@
 
       <!-- 試合タイトルセレクトボックス -->
       <v-select
-        :items="matchTitles"
+        :items="matchTitles.slice().reverse()"
         label="試合"
         class="ma-2"
         v-model="matchSelected"

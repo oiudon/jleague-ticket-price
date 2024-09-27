@@ -13,12 +13,16 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 from datetime import timedelta
 from pathlib import Path
 
+import environ
 from django.utils import timezone
 from django.utils.timezone import localtime
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+env = environ.Env()
+# もし.envファイルが存在したら設定を読み込む
+environ.Env.read_env(BASE_DIR / "config/.env")
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
@@ -27,9 +31,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-yy0fyzcsi+hoodsuf2fmt)$i)%1t-v15m)3xc!k25(pypkx)r6"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env("DEBUG")
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [env("ALLOWED_HOSTS")]
 
 
 # Application definition
@@ -52,6 +56,8 @@ INSTALLED_APPS = [
     "jleague_ticket_price.apps.JleagueTicketPriceConfig",
     # 管理サイトのインポート・エクスポート機能
     "import_export",
+    # スケジューラ
+    "django_apscheduler",
 ]
 
 MIDDLEWARE = [
@@ -91,12 +97,12 @@ WSGI_APPLICATION = "config.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": "jleagueticket-db",
-        "USER": "admin",
-        "PASSWORD": "pass",
-        "HOST": "localhost",
-        "PORT": 5432,
+        "ENGINE": env("DB_ENGINE"),
+        "NAME": env("DB_NAME"),
+        "USER": env("DB_USER"),
+        "PASSWORD": env("DB_PASSWORD"),
+        "HOST": env("DB_HOST"),
+        "PORT": env("DB_PORT"),
         "TIME_ZONE": "Asia/Tokyo",
         "TEST": {
             "MIRROR": "default",
@@ -175,7 +181,7 @@ LOGGING = {
         "file": {
             "level": "DEBUG",
             "class": "logging.FileHandler",
-            "filename": f"/Users/mac/Documents/Django/{BASE_DIR.name}/log/"
+            "filename": env("LOG_DIR")
             + localtime(timezone.now()).strftime("%Y-%m-%d")
             + ".log",
             "formatter": "development",
