@@ -79,3 +79,20 @@ class SeatCategorySerializer(serializers.ModelSerializer):
         fields = ["seat_category_name"]
         # 全フィールドを読み取り専用に設定
         read_only_fields = fields
+
+
+class TeamListSerializer(serializers.ModelSerializer):
+    """選択した年のチームを取得するシリアライザ"""
+
+    # 関連先のモデルから取得するフィールドを指定
+    team_name = serializers.ReadOnlyField(source="m_team.team_name")
+
+    class Meta:
+        # 対象のモデルクラスを指定
+        model = TicketPrice
+        # 利用するモデルのフィールドを指定
+        fields = [
+            "team_name",
+        ]
+        # 全フィールドを読み取り専用に設定
+        read_only_fields = fields

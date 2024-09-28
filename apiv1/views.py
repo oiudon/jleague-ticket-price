@@ -7,6 +7,7 @@ from jleague_ticket_price.models import TicketPrice
 from .serializers import (
     MatchTitleDatetimeSerializer,
     SeatCategorySerializer,
+    TeamListSerializer,
     TicketPriceSerializer,
     TicketYearSerializer,
 )
@@ -21,6 +22,8 @@ class TicketPriceFilter(filters.FilterSet):
     seat_category_name = filters.CharFilter(
         field_name="m_seat_category__seat_category_name", lookup_expr="exact"
     )
+    # 関連先の team_name で抽出するフィルターを追加
+    team_name = filters.CharFilter(field_name="m_team__team_name", lookup_expr="exact")
 
     class Meta:
         model = TicketPrice
@@ -61,11 +64,15 @@ class MatchTitleDatetimeListAPIView(generics.ListAPIView):
     def get_queryset(self):
         # 試合タイトルと日時、大会名、スタジアム名の一意な結果を取得
         queryset = TicketPrice.objects.all()
-        return self.filter_queryset(queryset).distinct(
-            "match_title",
-            "match_datetime",
-            "m_competition__competition_name",
-            "m_stadium__stadium_name",
+        return (
+            self.filter_queryset(queryset)
+            .distinct(
+                "match_title",
+                "match_datetime",
+                "m_competition__competition_name",
+                "m_stadium__stadium_name",
+            )
+            .order_by("match_datetime")
         )
 
 
@@ -93,4 +100,19 @@ class SeatCategoryListAPIView(generics.ListAPIView):
         queryset = TicketPrice.objects.all()
         return self.filter_queryset(queryset).distinct(
             "m_seat_category__seat_category_name",
+        )
+
+
+class TeamListAPIView(generics.ListAPIView):
+    """選択された年のチームのリストを取得するAPIクラス"""
+
+    serializer_class = TeamListSerializer
+    filter_backends = [filters.DjangoFilterBackend]
+    filterset_class = TicketPriceFilter
+
+    def get_queryset(self):
+        # 選択した試合の座席カテゴリの一意な結果を取得
+        queryset = TicketPrice.objects.all()
+        return self.filter_queryset(queryset).distinct(
+            "m_team__team_name",
         )

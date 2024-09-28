@@ -12,4 +12,6 @@ urlpatterns = [
     path("ticket-years/", views.TicketYearListAPIView.as_view()),
     # 座席カテゴリを取得
     path("seat-categories/", views.SeatCategoryListAPIView.as_view()),
+    # 試合の年のチーム一覧を取得
+    path("teams/", views.TeamListAPIView.as_view()),
 ]

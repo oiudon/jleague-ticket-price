@@ -1,8 +1,8 @@
 <template>
   <!-- ヘッダ -->
-  <v-app-bar id="header" color="blue-darken-4">
+  <v-app-bar id="header" color="grey-darken-4">
     <v-app-bar-title>
-      <v-btn href="/"><div class="font-weight-bold">FC町田ゼルビアチケット価格変動チェッカー</div></v-btn>
+      <v-btn href="/"><div class="font-weight-bold">Jリーグチケット価格変動チェッカー</div></v-btn>
     </v-app-bar-title>
     <!-- <template v-slot:append v-if="$route.meta.requiresAuth">
       <v-btn v-if="isLoggedIn">

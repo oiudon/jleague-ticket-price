@@ -5,7 +5,7 @@
       <!-- メッセージ表示欄 -->
       <GlobalMessage />
 
-      <p>※対象はホームの試合のみです</p>
+      <p>※対象はJ1ホーム試合のみです</p>
       <p>試合を選択してください</p>
 
       <!-- 試合年セレクトボックス -->
@@ -16,6 +16,15 @@
         v-model="yearSelected"
         max-width="150px"
       ></v-select>
+
+      <!-- チーム名コンボボックス -->
+      <v-combobox
+        :items="teams"
+        label="チーム"
+        class="ma-2"
+        v-model="teamSelected"
+        max-width="500px"
+      ></v-combobox>
 
       <!-- 試合タイトルセレクトボックス -->
       <v-select
@@ -67,6 +76,8 @@ export default {
 
     // 開催年セレクトボックスの選択肢
     const matchYears = ref([]);
+    // チームコンボボックスの選択肢
+    const teams = ref([]);
     // 試合タイトルセレクトボックスの選択肢
     const matchTitles = ref([]);
     // 座席カテゴリセレクトボックスの選択肢
@@ -76,6 +87,8 @@ export default {
 
     // 選択中の開催年
     const yearSelected = ref(null);
+    // 選択中のチーム
+    const teamSelected = ref(null);
     // 選択中の試合タイトル
     const matchSelected = ref(null);
     // 選択中の座席カテゴリ
@@ -89,6 +102,11 @@ export default {
       onYearSelectChange();
     });
 
+    // teamSelected の変更を監視し、変更があれば onTeamSelectChange を呼び出す
+    watch(teamSelected, () => {
+      onTeamSelectChange();
+    });
+
     // matchSelected の変更を監視し、変更があれば onMatchSelectChange を呼び出す
     watch(matchSelected, () => {
       onMatchSelectChange();
@@ -99,21 +117,51 @@ export default {
       onSeatSelectChange();
     });
 
+
     // 開催年セレクトボックスの値が変更されたときに発動する関数
     const onYearSelectChange = () => {
+      // メッセージをクリア
+      messageStore.clear();
+      // 選択中のチーム一覧、試合タイトル、試合会場、座席カテゴリ、グラフをクリア
+      teamSelected.value = null;
+      matchSelected.value = null;
+      stadiumName.value = null;
+      seatSelected.value = null;
+      seatCategories.value = [];
+      prices.value = [];
+      dates.value = [];
+
+      api({
+        // 開催年が選択されたらその年の試合があったチーム一覧を取得
+        method: "get",
+        url: `/teams/?year=${yearSelected.value}`,
+      })
+        .then((response) => {
+          // 選択された年の試合タイトルと試合時間を取得
+          teams.value = response.data.map((item) => item.team_name);
+        })
+        .catch((error) => {
+          // エラー発生時はエラーメッセージを表示
+          messageStore.setError(error);
+        });
+    };
+
+    // チームコンボボックスの値が変更されたときに発動する関数
+    const onTeamSelectChange = () => {
       // メッセージをクリア
       messageStore.clear();
       // 選択中の試合タイトル、試合会場、座席カテゴリ、グラフをクリア
       matchSelected.value = null;
       stadiumName.value = null;
       seatSelected.value = null;
+      seatCategories.value = [];
       prices.value = [];
       dates.value = [];
 
       api({
         // 開催年が選択されたらその年の試合一覧を取得
         method: "get",
-        url: `/match-title-datetime/?year=${yearSelected.value}`,
+        url: `/match-title-datetime/?year=${yearSelected.value}&team_name=${teamSelected.value}`,
       })
         .then((response) => {
           // 選択された年の試合タイトルと試合時間を取得
@@ -146,6 +194,7 @@ export default {
           messageStore.setError(error);
         });
     };
+
 
     // 試合タイトルセレクトボックスの値が変更されたときに発動する関数
     const onMatchSelectChange = () => {
@@ -211,7 +260,7 @@ export default {
         api({
           // 座席カテゴリが選択されたらその座席のチケット価格を取得
           method: "get",
-          url: `/ticket-prices/?team_name=ＦＣ町田ゼルビア&match_datetime=${matchDatetime}&match_title=${matchTitle}&seat_category_name=${seatSelected.value}`,
+          url: `/ticket-prices/?team_name=${teamSelected.value}&match_datetime=${matchDatetime}&match_title=${matchTitle}&seat_category_name=${seatSelected.value}`,
         })
           .then((response) => {
             // チケット価格を配列で取得
@@ -249,9 +298,11 @@ export default {
       prices,
       dates,
       matchYears,
+      teams,
       matchTitles,
       seatCategories,
       yearSelected,
+      teamSelected,
       matchSelected,
       onYearSelectChange,
       onMatchSelectChange,
