@@ -39,6 +39,12 @@ def ticket_price_scraping():
 
     # リーグ名を取得
     league_name = soup.find(class_="top-club-j1").text.strip().split("(")[0]
+    # リーグ名がリーグマスタに未登録なら登録
+    if not League.objects.filter(league_name=league_name).exists():
+        league = League.objects.create(league_name=league_name)
+        print(f"未登録のリーグ名：{league} を登録しました")
+    else:
+        league = League.objects.get(league_name=league_name)
 
     for element in ji_teams.find_all("li"):
         # チームコードを抽出
@@ -58,13 +64,17 @@ def ticket_price_scraping():
 
         # チーム名がチームマスタに未登録なら登録
         if not Team.objects.filter(team_name=team_name, team_code=team_code).exists():
-            league = League.objects.get(league_name=league_name)
             team = Team.objects.create(
                 team_name=team_name, team_code=team_code, m_league=league
             )
             print(f"未登録のチーム名：{team} を登録しました")
         else:
             team = Team.objects.get(team_name=team_name, team_code=team_code)
+            # 所属リーグが異なっている場合更新
+            if team.m_league != league:
+                team.m_league = league
+                team.save()
+                print(f"チーム名：{team} の所属リーグを更新しました")
 
         # チケット価格を取得
         try:
