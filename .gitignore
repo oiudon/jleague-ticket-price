@@ -7,3 +7,4 @@ __pycache__
 log
 scraping.ipynb
 dumpfile.in
+*.pem
