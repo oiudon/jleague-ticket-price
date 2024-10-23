@@ -33,7 +33,7 @@ SECRET_KEY = "django-insecure-yy0fyzcsi+hoodsuf2fmt)$i)%1t-v15m)3xc!k25(pypkx)r6
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env("DEBUG")
 
-ALLOWED_HOSTS = [env("ALLOWED_HOSTS")]
+ALLOWED_HOSTS = env("ALLOWED_HOSTS").split(",")
 
 
 # Application definition
@@ -180,10 +180,11 @@ LOGGING = {
         # ファイル出力用ハンドラ
         "file": {
             "level": "DEBUG",
-            "class": "logging.FileHandler",
-            "filename": env("LOG_DIR")
-            + localtime(timezone.now()).strftime("%Y-%m-%d")
-            + ".log",
+            "class": "logging.handlers.TimedRotatingFileHandler",
+            "filename": env("LOG_DIR") + "app.log",
+            "when": "midnight",  # 毎日深夜0時にローテーション
+            "interval": 1,  # 1日単位
+            "backupCount": 7,  # ログファイルのバックアップ数
             "formatter": "development",
         },
     },
