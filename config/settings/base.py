@@ -14,26 +14,24 @@ from datetime import timedelta
 from pathlib import Path
 
 import environ
-from django.utils import timezone
-from django.utils.timezone import localtime
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 env = environ.Env()
 # もし.envファイルが存在したら設定を読み込む
-environ.Env.read_env(BASE_DIR / "config/.env")
+environ.Env.read_env(BASE_DIR / "config/settings/.env")
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-yy0fyzcsi+hoodsuf2fmt)$i)%1t-v15m)3xc!k25(pypkx)r6"
+SECRET_KEY = env("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env("DEBUG")
+# DEBUG = True
 
-ALLOWED_HOSTS = env("ALLOWED_HOSTS").split(",")
+ALLOWED_HOSTS = env.list("ALLOWED_HOSTS")
 
 
 # Application definition
@@ -95,20 +93,20 @@ WSGI_APPLICATION = "config.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-DATABASES = {
-    "default": {
-        "ENGINE": env("DB_ENGINE"),
-        "NAME": env("DB_NAME"),
-        "USER": env("DB_USER"),
-        "PASSWORD": env("DB_PASSWORD"),
-        "HOST": env("DB_HOST"),
-        "PORT": env("DB_PORT"),
-        "TIME_ZONE": "Asia/Tokyo",
-        "TEST": {
-            "MIRROR": "default",
-        },
-    }
-}
+# DATABASES = {
+#     "default": {
+#         "ENGINE": env("DB_ENGINE"),
+#         "NAME": env("DB_NAME"),
+#         "USER": env("DB_USER"),
+#         "PASSWORD": env("DB_PASSWORD"),
+#         "HOST": env("DB_HOST"),
+#         "PORT": env("DB_PORT"),
+#         "TIME_ZONE": "Asia/Tokyo",
+#         "TEST": {
+#             "MIRROR": "default",
+#         },
+#     }
+# }
 
 
 # Password validation
@@ -155,63 +153,63 @@ STATICFILES_DIRS = [BASE_DIR / "static"]
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-# ロギング設定
-LOGGING = {
-    # スキーマバージョンは「1」固定
-    "version": 1,
-    # 既に作成されているロガーを無効化しないための設定
-    "disable_existing_loggers": False,
-    # ログフォーマット
-    "formatters": {
-        # 開発用
-        "development": {
-            "format": "[{name}] {asctime} [{levelname}] {pathname}:{lineno:d} "
-            "{message}",
-            "style": "{",
-        },
-    },
-    "handlers": {
-        # コンソール出力用ハンドラ
-        "console": {
-            "level": "DEBUG",
-            "class": "logging.StreamHandler",
-            "formatter": "development",
-        },
-        # ファイル出力用ハンドラ
-        "file": {
-            "level": "DEBUG",
-            "class": "logging.handlers.TimedRotatingFileHandler",
-            "filename": env("LOG_DIR") + "app.log",
-            "when": "midnight",  # 毎日深夜0時にローテーション
-            "interval": 1,  # 1日単位
-            "backupCount": 7,  # ログファイルのバックアップ数
-            "formatter": "development",
-        },
-    },
-    # # ルートロガー
-    # "root": {
-    #     "handlers": ["console", "file"],
-    #     "level": "INFO",
-    # },
-    # その他のロガー
-    "loggers": {
-        # Django本体が出力するログ全般を扱うロガー
-        "django": {
-            "handlers": ["console", "file"],
-            "level": "INFO",
-        },
-        # jleague_ticket_priceアプリが出力するログを扱うロガー
-        "jleague_ticket_price": {
-            "handlers": ["console", "file"],
-            "level": "INFO",
-        },
-        # apiv1アプリが出力するログを扱うロガー
-        "apiv1": {
-            "handlers": ["console", "file"],
-            "level": "INFO",
-        },
-    },
-}
+# # ロギング設定
+# LOGGING = {
+#     # スキーマバージョンは「1」固定
+#     "version": 1,
+#     # 既に作成されているロガーを無効化しないための設定
+#     "disable_existing_loggers": False,
+#     # ログフォーマット
+#     "formatters": {
+#         # 開発用
+#         "development": {
+#             "format": "[{name}] {asctime} [{levelname}] {pathname}:{lineno:d} "
+#             "{message}",
+#             "style": "{",
+#         },
+#     },
+#     "handlers": {
+#         # コンソール出力用ハンドラ
+#         "console": {
+#             "level": "DEBUG",
+#             "class": "logging.StreamHandler",
+#             "formatter": "development",
+#         },
+#         # ファイル出力用ハンドラ
+#         "file": {
+#             "level": "DEBUG",
+#             "class": "logging.handlers.TimedRotatingFileHandler",
+#             "filename": env("LOG_DIR") + "app.log",
+#             "when": "midnight",  # 毎日深夜0時にローテーション
+#             "interval": 1,  # 1日単位
+#             "backupCount": 7,  # ログファイルのバックアップ数
+#             "formatter": "development",
+#         },
+#     },
+#     # # ルートロガー
+#     # "root": {
+#     #     "handlers": ["console", "file"],
+#     #     "level": "INFO",
+#     # },
+#     # その他のロガー
+#     "loggers": {
+#         # Django本体が出力するログ全般を扱うロガー
+#         "django": {
+#             "handlers": ["console", "file"],
+#             "level": "INFO",
+#         },
+#         # jleague_ticket_priceアプリが出力するログを扱うロガー
+#         "jleague_ticket_price": {
+#             "handlers": ["console", "file"],
+#             "level": "INFO",
+#         },
+#         # apiv1アプリが出力するログを扱うロガー
+#         "apiv1": {
+#             "handlers": ["console", "file"],
+#             "level": "INFO",
+#         },
+#     },
+# }
 
 # DRF
 REST_FRAMEWORK = {
