@@ -1,6 +1,6 @@
-from .base import *
+from .settings import *
 
-DEBUG = True
+DEBUG=True
 
 ALLOWED_HOSTS = ["*"]
 
@@ -19,7 +19,6 @@ DATABASES = {
         },
     }
 }
-
 
 # ロギング設定
 LOGGING = {
@@ -47,8 +46,7 @@ LOGGING = {
         "file": {
             "level": "DEBUG",
             "class": "logging.handlers.TimedRotatingFileHandler",
-            "filename": "/Users/mac/Documents/Django/jleague-ticket-price/log/"
-            + "app.log",
+            "filename": "/Users/mac/Documents/Django/jleague-ticket-price/log/" + "app.log",
             "when": "midnight",  # 毎日深夜0時にローテーション
             "interval": 1,  # 1日単位
             "backupCount": 7,  # ログファイルのバックアップ数
