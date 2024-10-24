@@ -28,12 +28,12 @@ environ.Env.read_env(BASE_DIR / "config/.env")
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-yy0fyzcsi+hoodsuf2fmt)$i)%1t-v15m)3xc!k25(pypkx)r6"
+SECRET_KEY = env("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env("DEBUG")
+DEBUG=False
 
-ALLOWED_HOSTS = [env("ALLOWED_HOSTS")]
+ALLOWED_HOSTS = env.list("ALLOWED_HOSTS")
 
 
 # Application definition
@@ -149,6 +149,7 @@ USE_TZ = True
 
 STATIC_URL = "/static/"
 STATICFILES_DIRS = [BASE_DIR / "static"]
+STATIC_ROOT = "/var/www/jleague-ticket-price/static"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
@@ -180,10 +181,11 @@ LOGGING = {
         # ファイル出力用ハンドラ
         "file": {
             "level": "DEBUG",
-            "class": "logging.FileHandler",
-            "filename": env("LOG_DIR")
-            + localtime(timezone.now()).strftime("%Y-%m-%d")
-            + ".log",
+            "class": "logging.handlers.TimedRotatingFileHandler",
+            "filename": env("LOG_DIR") + "app.log",
+            "when": "midnight",  # 毎日深夜0時にローテーション
+            "interval": 1,  # 1日単位
+            "backupCount": 7,  # ログファイルのバックアップ数
             "formatter": "development",
         },
     },
