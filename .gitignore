@@ -8,3 +8,4 @@ log
 scraping.ipynb
 dumpfile.in
 *.pem
+.env
