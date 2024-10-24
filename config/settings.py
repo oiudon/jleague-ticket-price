@@ -14,8 +14,9 @@ from datetime import timedelta
 from pathlib import Path
 
 import environ
-from django.utils import timezone
-from django.utils.timezone import localtime
+
+# from django.utils import timezone
+# from django.utils.timezone import localtime
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -31,7 +32,7 @@ environ.Env.read_env(BASE_DIR / "config/.env")
 SECRET_KEY = env("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG=False
+DEBUG = False
 
 ALLOWED_HOSTS = env.list("ALLOWED_HOSTS")
 
