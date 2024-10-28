@@ -1,6 +1,14 @@
 <template>
   <!-- メインコンテンツ -->
   <v-main>
+    <!-- プログレスバー -->
+    <div v-if="loading" id="loading">
+      <v-progress-circular
+        :indeterminate="loading"
+        color="primary"
+      ></v-progress-circular>
+    </div>
+
     <v-container max-width="800px">
       <!-- メッセージ表示欄 -->
       <GlobalMessage />
@@ -97,6 +105,9 @@ export default {
     // スタジアム名
     const stadiumName = ref(null);
 
+    // プログレスバーフラグ
+    const loading = ref(true);
+
     // yearSelected の変更を監視し、変更があれば onYearSelectChange を呼び出す
     watch(yearSelected, () => {
       onYearSelectChange();
@@ -120,6 +131,8 @@ export default {
 
     // 開催年セレクトボックスの値が変更されたときに発動する関数
     const onYearSelectChange = () => {
+      // プログレスバーを表示
+      loading.value = true;
       // メッセージをクリア
       messageStore.clear();
       // 選択中のチーム一覧、試合タイトル、試合会場、座席カテゴリ、グラフをクリア
@@ -139,15 +152,21 @@ export default {
         .then((response) => {
           // 選択された年の試合タイトルと試合時間を取得
           teams.value = response.data.map((item) => item.team_name);
+          // プログレスバーを非表示
+          loading.value = false;
         })
         .catch((error) => {
           // エラー発生時はエラーメッセージを表示
           messageStore.setError(error);
+          // プログレスバーを非表示
+          loading.value = false;
         });
     };
 
     // チームコンボボックスの値が変更されたときに発動する関数
     const onTeamSelectChange = () => {
+      // プログレスバーを表示
+      loading.value = true;
       // メッセージをクリア
       messageStore.clear();
       // 選択中の試合タイトル、試合会場、座席カテゴリ、グラフをクリア
@@ -188,16 +207,22 @@ export default {
             // 形式に合わせて文字列を作成
             return `${monthStr}月${dayStr}日(${weekdayStr})${hours}:${minutes}　${item.match_title}　${item.competition_name}`;
           });
+          // プログレスバーを非表示
+          loading.value = false;
         })
         .catch((error) => {
           // エラー発生時はエラーメッセージを表示
           messageStore.setError(error);
+          // プログレスバーを非表示
+          loading.value = false;
         });
     };
 
 
     // 試合タイトルセレクトボックスの値が変更されたときに発動する関数
     const onMatchSelectChange = () => {
+      // プログレスバーを表示
+      loading.value = true;
       // メッセージをクリア
       messageStore.clear();
       // 選択中の試合タイトル、試合会場、座席カテゴリ、グラフをクリア
@@ -230,16 +255,22 @@ export default {
             seatCategories.value = response.data.map(
               (item) => item.seat_category_name
             );
+            // プログレスバーを非表示
+            loading.value = false;
           })
           .catch((error) => {
             // エラー発生時はエラーメッセージを表示
             messageStore.setError(error);
+            // プログレスバーを非表示
+            loading.value = false;
           });
       }
     };
 
     // 座席カテゴリセレクトボックスの値が変更されたときに発動する関数
     const onSeatSelectChange = () => {
+      // プログレスバーを表示
+      loading.value = true;
       // メッセージをクリア
       messageStore.clear();
       if (seatSelected.value) {
@@ -267,10 +298,14 @@ export default {
             prices.value = response.data.map((item) => item.price);
             // 登録日を配列で取得
             dates.value = response.data.map((item) => item.created_at);
+            // プログレスバーを非表示
+            loading.value = false;
           })
           .catch((error) => {
             // エラー発生時はエラーメッセージを表示
             messageStore.setError(error);
+            // プログレスバーを非表示
+            loading.value = false;
           });
       }
     };
@@ -308,7 +343,20 @@ export default {
       onMatchSelectChange,
       stadiumName,
       seatSelected,
+      loading,
     };
   },
 };
 </script>
+
+<style>
+#loading {
+  display: flex; /* Flexboxレイアウトを使用し、子要素を中央に揃える */
+  justify-content: center; /* 子要素を横方向の中央に配置する */
+  align-items: center; /* 子要素を縦方向の中央に配置する */
+  width: 100%; /* 横幅を100%に設定し、画面全体に広がるようにする */
+  height: 100vh; /* 高さをビューポートの高さ（100vh）に設定する */
+  z-index: 9999; /* 他の要素の上に表示されるように z-index を最大値に近い数値に設定する */
+  position: fixed; /* 固定位置に設定し、スクロールしても表示位置が変わらないようにする */
+}
+</style>
