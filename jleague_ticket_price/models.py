@@ -1,8 +1,15 @@
+"""モデル"""
+
 from django.db import models
 
 
 class League(models.Model):
-    """6.リーグマスタ"""
+    """
+    6.リーグマスタ
+
+    外部キー：
+        なし
+    """
 
     class Meta:
         # テーブル名
@@ -20,7 +27,12 @@ class League(models.Model):
 
 
 class Team(models.Model):
-    """2.チームマスタ"""
+    """
+    2.チームマスタ
+
+    外部キー：
+        6.リーグマスタ
+    """
 
     class Meta:
         # テーブル名
@@ -46,7 +58,12 @@ class Team(models.Model):
 
 
 class Competition(models.Model):
-    """3.大会マスタ"""
+    """
+    3.大会マスタ
+
+    外部キー：
+        なし
+    """
 
     class Meta:
         # テーブル名
@@ -66,7 +83,12 @@ class Competition(models.Model):
 
 
 class Stadium(models.Model):
-    """4.スタジアムマスタ"""
+    """
+    4.スタジアムマスタ
+
+    外部キー：
+        なし
+    """
 
     class Meta:
         # テーブル名
@@ -86,7 +108,12 @@ class Stadium(models.Model):
 
 
 class SeatCategory(models.Model):
-    """5.座席カテゴリマスタ"""
+    """
+    5.座席カテゴリマスタ
+
+    外部キー：
+        4.スタジアムマスタ
+    """
 
     class Meta:
         # テーブル名
@@ -114,7 +141,15 @@ class SeatCategory(models.Model):
 
 
 class TicketPrice(models.Model):
-    """1.チケット価格"""
+    """
+    1.チケット価格
+
+    外部キー：
+        2.チームマスタ
+        3.大会マスタ
+        4.スタジアムマスタ
+        5.座席カテゴリマスタ
+    """
 
     class Meta:
         # テーブル名

@@ -1,3 +1,5 @@
+"""DRF用URLConf"""
+
 from django.urls import path
 
 from apiv1 import views

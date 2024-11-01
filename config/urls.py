@@ -1,3 +1,5 @@
+"""URLConf"""
+
 # from apscheduler.schedulers.background import BackgroundScheduler
 # from dateutil import tz
 from django.contrib import admin

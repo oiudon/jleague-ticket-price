@@ -1,3 +1,11 @@
+"""
+開発環境用設定ファイル
+
+    * 開発環境用の設定を記述している
+    * 起動法①：python manage.py runserver --settings config.local_settings
+    * 起動法②：export DJANGO_SETTINGS_MODULE=config.local_settings 実行後普通に runserver
+"""
+
 from .settings import *
 
 DEBUG = True
