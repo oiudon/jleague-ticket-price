@@ -8,7 +8,7 @@ class League(models.Model):
     6.リーグマスタ
 
     外部キー：
-        なし
+        * なし
     """
 
     class Meta:
@@ -31,7 +31,7 @@ class Team(models.Model):
     2.チームマスタ
 
     外部キー：
-        6.リーグマスタ
+        * 6.リーグマスタ
     """
 
     class Meta:
@@ -62,7 +62,7 @@ class Competition(models.Model):
     3.大会マスタ
 
     外部キー：
-        なし
+        * なし
     """
 
     class Meta:
@@ -87,7 +87,7 @@ class Stadium(models.Model):
     4.スタジアムマスタ
 
     外部キー：
-        なし
+        * なし
     """
 
     class Meta:
@@ -112,7 +112,7 @@ class SeatCategory(models.Model):
     5.座席カテゴリマスタ
 
     外部キー：
-        4.スタジアムマスタ
+        * 4.スタジアムマスタ
     """
 
     class Meta:
@@ -145,10 +145,10 @@ class TicketPrice(models.Model):
     1.チケット価格
 
     外部キー：
-        2.チームマスタ
-        3.大会マスタ
-        4.スタジアムマスタ
-        5.座席カテゴリマスタ
+        * 2.チームマスタ
+        * 3.大会マスタ
+        * 4.スタジアムマスタ
+        * 5.座席カテゴリマスタ
     """
 
     class Meta:

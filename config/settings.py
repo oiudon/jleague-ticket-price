@@ -51,8 +51,8 @@ INSTALLED_APPS = [
     "jleague_ticket_price.apps.JleagueTicketPriceConfig",
     # 管理サイトのインポート・エクスポート機能
     "import_export",
-    # スケジューラ
-    "django_apscheduler",
+    # # スケジューラ
+    # "django_apscheduler",
 ]
 
 MIDDLEWARE = [
