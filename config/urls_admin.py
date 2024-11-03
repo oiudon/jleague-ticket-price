@@ -4,6 +4,7 @@
     * 本番環境で管理サイトへのアクセス分断するために切り出した管理サイトURLConf
 """
 
+import debug_toolbar
 from django.contrib import admin
 from django.urls import include, path, re_path
 from django.views.generic import RedirectView, TemplateView
@@ -33,5 +34,8 @@ urlpatterns = [
         SpectacularRedocView.as_view(url_name="schema"),
         name="redoc",
     ),
+    # debug-toolbar
+    path("__debug__/", include(debug_toolbar.urls)),
+    # リダイレクト
     re_path("", RedirectView.as_view(url="/")),
 ]

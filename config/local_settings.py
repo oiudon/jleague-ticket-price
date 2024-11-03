@@ -40,6 +40,21 @@ INSTALLED_APPS = [
     "django.contrib.admindocs",
     # DRF-spectacular
     "drf_spectacular",
+    # debug-toolbar
+    "debug_toolbar",
+]
+
+# ミドルウェア設定
+MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",  # corsheaders
+    "django.middleware.security.SecurityMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.common.CommonMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 
 # データベース設定
@@ -117,11 +132,21 @@ LOGGING = {
     },
 }
 
-# DRF
+# DRF設定
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ],
     # DRF-spectacular
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+}
+
+
+# debug-toolbar設定
+def show_toolbar(request):
+    return True
+
+
+DEBUG_TOOLBAR_CONFIG = {
+    "SHOW_TOOLBAR_CALLBACK": show_toolbar,
 }

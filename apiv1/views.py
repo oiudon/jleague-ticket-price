@@ -81,7 +81,7 @@ class TicketPriceListAPIView(generics.ListAPIView):
 
 class MatchTitleDatetimeListAPIView(generics.ListAPIView):
     """
-    試合タイトルと日時、大会名だけを取得するAPIクラス
+    試合タイトルと日時、大会名、スタジアム名だけを取得するAPIクラス
 
         * 試合タイトルと日時、大会名、スタジアム名の一意な結果を取得する
         * TicketPriceFilterを使用
@@ -101,7 +101,7 @@ class MatchTitleDatetimeListAPIView(generics.ListAPIView):
         Returns:
             試合タイトルと日時、大会名、スタジアム名の一意な結果
         """
-        queryset = TicketPrice.objects.all()
+        queryset = TicketPrice.objects.select_related("m_competition", "m_stadium")
         return (
             self.filter_queryset(queryset)
             .distinct(
@@ -159,7 +159,7 @@ class SeatCategoryListAPIView(generics.ListAPIView):
         Returns:
             選択した試合の座席カテゴリの一意な結果
         """
-        queryset = TicketPrice.objects.all()
+        queryset = TicketPrice.objects.select_related("m_seat_category")
         return self.filter_queryset(queryset).distinct(
             "m_seat_category__seat_category_name",
         )
@@ -171,7 +171,7 @@ class TeamListAPIView(generics.ListAPIView):
 
         * 選択された年のチームのリストを取得する
         * TicketPriceFilterを使用
-        * URL："api/v1/seat-categories/"
+        * URL："api/v1/teams/"
     """
 
     serializer_class = TeamListSerializer
@@ -187,7 +187,7 @@ class TeamListAPIView(generics.ListAPIView):
         Returns:
             選択された年のチームのリストの一意な結果
         """
-        queryset = TicketPrice.objects.all()
+        queryset = TicketPrice.objects.select_related("m_team")
         return self.filter_queryset(queryset).distinct(
             "m_team__team_name",
         )

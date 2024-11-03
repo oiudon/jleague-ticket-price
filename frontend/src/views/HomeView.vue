@@ -178,7 +178,7 @@ export default {
       dates.value = [];
 
       api({
-        // 開催年が選択されたらその年の試合一覧を取得
+        // チームが選択されたらその年の試合一覧を取得
         method: "get",
         url: `/match-title-datetime/?year=${yearSelected.value}&team_name=${teamSelected.value}`,
       })
@@ -248,7 +248,7 @@ export default {
         api({
           // 試合タイトルが選択されたらその試合のスタジアムの座席カテゴリを取得
           method: "get",
-          url: `/seat-categories/?team_name=ＦＣ町田ゼルビア&match_datetime=${matchDatetime}&match_title=${matchTitle}`,
+          url: `/seat-categories/?match_datetime=${matchDatetime}&match_title=${matchTitle}`,
         })
           .then((response) => {
             // 座席カテゴリを配列で取得
