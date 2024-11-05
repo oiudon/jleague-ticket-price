@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     "drf_spectacular",
     # debug-toolbar
     "debug_toolbar",
+    # django-extensions
+    "django_extensions",
 ]
 
 # ミドルウェア設定
