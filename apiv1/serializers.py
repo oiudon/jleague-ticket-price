@@ -1,3 +1,5 @@
+"""シリアライザ"""
+
 from rest_framework import serializers
 
 from jleague_ticket_price.models import TicketPrice

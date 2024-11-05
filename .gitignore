@@ -9,3 +9,5 @@ scraping.ipynb
 dumpfile.in
 *.pem
 .env
+.ipynb_checkpoints
+docs

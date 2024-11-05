@@ -1,3 +1,5 @@
+"""管理サイト"""
+
 from django.contrib import admin
 from import_export import resources
 from import_export.admin import ImportExportModelAdmin
@@ -13,6 +15,8 @@ class TicketPriceResource(resources.ModelResource):
 
 @admin.register(TicketPrice)
 class TicketPriceAdmin(ImportExportModelAdmin):
+    """1.チケット価格モデルの管理サイト設定"""
+
     list_display = (
         "id",  # 1.レコードID
         "created_at",  # 2.登録日時
@@ -54,6 +58,8 @@ class TeamResource(resources.ModelResource):
 
 @admin.register(Team)
 class TeamAdmin(ImportExportModelAdmin):
+    """2.チームマスタモデルの管理サイト設定"""
+
     list_display = (
         "id",  # 1.レコードID
         "team_name",  # 2.チーム名
@@ -76,6 +82,8 @@ class CompetitionResource(resources.ModelResource):
 
 @admin.register(Competition)
 class CompetitionAdmin(ImportExportModelAdmin):
+    """3.大会マスタモデルの管理サイト設定"""
+
     list_display = (
         "id",  # 1.レコードID
         "competition_name",  # 2.大会名
@@ -96,6 +104,8 @@ class StadiumResource(resources.ModelResource):
 
 @admin.register(Stadium)
 class StadiumAdmin(ImportExportModelAdmin):
+    """4.スタジアムマスタモデルの管理サイト設定"""
+
     list_display = (
         "id",  # 1.レコードID
         "stadium_name",  # 2.スタジアム名
@@ -116,6 +126,8 @@ class SeatCategoryResource(resources.ModelResource):
 
 @admin.register(SeatCategory)
 class SeatCategoryAdmin(ImportExportModelAdmin):
+    """5.座席カテゴリマスタモデルの管理サイト設定"""
+
     list_display = (
         "id",  # 1.レコードID
         "m_stadium",  # 2.スタジアムID
@@ -137,6 +149,8 @@ class LeagueResource(resources.ModelResource):
 
 @admin.register(League)
 class LeagueAdmin(ImportExportModelAdmin):
+    """6.リーグマスタモデルの管理サイト設定"""
+
     list_display = (
         "id",  # 1.レコードID
         "league_name",  # 2.リーグ名

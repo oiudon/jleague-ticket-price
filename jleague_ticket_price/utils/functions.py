@@ -1,3 +1,9 @@
+"""
+汎用関数
+
+    * 定期実行する関数を定義している。
+"""
+
 import logging
 import os
 import re
@@ -27,6 +33,19 @@ japan_timezone = pytz.timezone("Asia/Tokyo")
 
 @transaction.atomic
 def ticket_price_scraping():
+    """
+    J1の各チームのチケット価格をスクレイピングする関数
+
+        * スクレイピングしたデータをDBに登録する。
+        * 毎日9:30,12:30,15:30,18:30に実行される。
+        * 登録済みのデータはスキップされる。
+
+    Args:
+        なし
+    Returns:
+        なし
+    """
+
     logger.info("チケット価格スクレイピング開始")
 
     # Jリーグチケットサイトを取得して解析
@@ -195,6 +214,18 @@ def ticket_price_scraping():
 
 
 def cleanup_logs():
+    """
+    ログ消去関数
+
+        * 1週間以上前のログファイルを削除する関数。
+        * 現在は使用していない。
+
+    Args:
+        なし
+    Returns:
+        なし
+    """
+
     logger.info("ログ削除処理開始")
 
     BASE_DIR = Path(__file__).resolve().parent.parent
