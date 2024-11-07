@@ -100,7 +100,7 @@ DATABASES = {
         "PORT": env("DB_PORT"),
         "TIME_ZONE": "Asia/Tokyo",
         "TEST": {
-            "MIRROR": "default",
+            "MIRROR": "default",  # テスト用DBは作成せず、デフォルトのDBを使用する
         },
     }
 }
