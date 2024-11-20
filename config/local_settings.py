@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     "drf_spectacular",
     # debug-toolbar
     "debug_toolbar",
+    # django-extensions
+    "django_extensions",
 ]
 
 # ミドルウェア設定
@@ -68,7 +70,7 @@ DATABASES = {
         "PORT": "5432",
         "TIME_ZONE": "Asia/Tokyo",
         "TEST": {
-            "MIRROR": "default",
+            "MIRROR": "default",  # テスト用DBは作成せず、デフォルトのDBを使用する
         },
     }
 }
