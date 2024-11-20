@@ -99,9 +99,9 @@ DATABASES = {
         "HOST": env("DB_HOST"),
         "PORT": env("DB_PORT"),
         "TIME_ZONE": "Asia/Tokyo",
-        "TEST": {
-            "MIRROR": "default",  # テスト用DBは作成せず、デフォルトのDBを使用する
-        },
+        # "TEST": {
+        #     "MIRROR": "default",  # テスト用DBは作成せず、デフォルトのDBを使用する
+        # },
     }
 }
 

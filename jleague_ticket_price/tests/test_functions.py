@@ -7,10 +7,14 @@
 
 from django.test import TestCase
 
-from jleague_ticket_price.utils.functions import cleanup_logs, ticket_price_scraping
+from jleague_ticket_price.utils.functions import ticket_price_scraping
 
 
 class TestTicketPriceScraping(TestCase):
+    """scraping関数のテスト"""
+
+    # テスト用DBに使用するFixtureファイルを指定
+    fixtures = ["jleague_ticket_price/fixtures/example_fixture.json"]
 
     def test_scraping_success(self):
         """

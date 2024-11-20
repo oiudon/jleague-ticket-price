@@ -12,6 +12,9 @@ from rest_framework.test import APIClient, APITestCase
 class TestTicketPriceListAPIView(APITestCase):
     """TicketPriceListAPIViewのテスト"""
 
+    # テスト用DBに使用するFixtureファイルを指定
+    fixtures = ["jleague_ticket_price/fixtures/example_fixture.json"]
+
     def setUp(self):
         # APIClient のインスタンスを作成
         self.client = APIClient()
@@ -50,6 +53,9 @@ class TestTicketPriceListAPIView(APITestCase):
 
 class TestMatchTitleDatetimeListAPIView(APITestCase):
     """MatchTitleDatetimeListAPIViewのテスト"""
+
+    # テスト用DBに使用するFixtureファイルを指定
+    fixtures = ["jleague_ticket_price/fixtures/example_fixture.json"]
 
     def setUp(self):
         # APIClient のインスタンスを作成
@@ -91,6 +97,9 @@ class TestMatchTitleDatetimeListAPIView(APITestCase):
 class TestTicketYearListAPIView(APITestCase):
     """TicketYearListAPIViewのテスト"""
 
+    # テスト用DBに使用するFixtureファイルを指定
+    fixtures = ["jleague_ticket_price/fixtures/example_fixture.json"]
+
     def setUp(self):
         # APIClient のインスタンスを作成
         self.client = APIClient()
@@ -122,6 +131,9 @@ class TestTicketYearListAPIView(APITestCase):
 
 class TestSeatCategoryListAPIView(APITestCase):
     """SeatCategoryListAPIViewのテスト"""
+
+    # テスト用DBに使用するFixtureファイルを指定
+    fixtures = ["jleague_ticket_price/fixtures/example_fixture.json"]
 
     def setUp(self):
         # APIClient のインスタンスを作成
@@ -158,6 +170,9 @@ class TestSeatCategoryListAPIView(APITestCase):
 
 class TestTeamListAPIView(APITestCase):
     """TeamListAPIViewのテスト"""
+
+    # テスト用DBに使用するFixtureファイルを指定
+    fixtures = ["jleague_ticket_price/fixtures/example_fixture.json"]
 
     def setUp(self):
         # APIClient のインスタンスを作成
