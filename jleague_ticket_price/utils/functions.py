@@ -122,7 +122,19 @@ def ticket_price_scraping():
                     day = element.find(class_="vs-box-info-day").text
                     time = element.find(class_="vs-box-info-time").text
 
-                    datetime_str = f"2024/{day} {time}"
+                    # 現在の年と月日を分解
+                    current_year = datetime.now().year
+                    current_date = datetime.now()
+                    # 入力された日付を現在の年に基づいて作成
+                    input_date = datetime.strptime(day, "%m/%d")
+                    input_date = input_date.replace(year=current_year)
+                    # 入力された日付が過ぎている場合、来年の日付を設定
+                    if input_date < current_date:
+                        input_date = input_date.replace(year=current_year + 1)
+                    # その日付の年を取得
+                    year = str(input_date.year)
+
+                    datetime_str = f"{year}/{day} {time}"
                     match_datetime = japan_timezone.localize(
                         datetime.strptime(datetime_str, "%Y/%m/%d %H:%M")
                     )
